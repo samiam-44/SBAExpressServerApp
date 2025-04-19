@@ -1,0 +1,17 @@
+body {
+    padding: 2rem;
+    background-color: #111;
+    color: #f0f0f0;
+  }
+  .choices button {
+    margin: 0.5rem 0;
+    padding: 0.5rem 1rem;
+    background: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .choices button:hover {
+    background-color: #555;
+  }
