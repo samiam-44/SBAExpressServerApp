@@ -22,7 +22,7 @@ function renderStep(step) {
       ${step.choices
         .map(  // Map each choice into a button that loads the nect step when clicked
           (choice) =>
-            `<button onclick="loadStep('${choice.next}')">${choice.text}</button>`
+            `<button onclick="loadStep('${choice.next}')">${choice.text}</button>` //basically like an event listener
         )
         .join('')}
     </div>
@@ -30,14 +30,15 @@ function renderStep(step) {
 //Set the story container's content to the generated HTML
   storyContainer.innerHTML = html;
 }
+
 // After rendering, add event listeners to each button
-const buttons = storyContainer.querySelectorAll('.choices button');
-buttons.forEach((button) => {
-  button.addEventListener('click', () => {
-    const nextStepId = button.getAttribute('data-next');
-    loadStep(nextStepId); // Call loadStep when the button is clicked
-  });
-});
+// const buttons = storyContainer.querySelectorAll('.choices button');
+// buttons.forEach((button) => {
+//   button.addEventListener('click', () => {
+//     const nextStepId = button.getAttribute('data-next');
+//     loadStep(nextStepId); // Call loadStep when the button is clicked
+//   });
+
 
 // Load the first step
-//loadStep();
+loadStep();
