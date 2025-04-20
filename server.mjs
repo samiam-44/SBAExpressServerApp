@@ -13,139 +13,494 @@ app.use((req, res, next) => { //Logs every request to the server
 });
 // ------------ROUTES
 //app.get('/', (req, res) => {
-  //  res.send('Hello');
+//  res.send('Hello');
 //})
 //Filler story data
 const storySteps = {
     start: {
-      id: "start",
-      text: "You wake up in a dark forest. What do you do?",
-      choices: [
-        { text: "Walk toward the strange light", next: "light" },
-        { text: "Stay still and listen", next: "listen" }
-      ]
+        id: "start",
+        text: "It’s Day One of the outbreak. You and your cat, NEO, are holed up in your Seattle apartment. Sirens scream nonstop. The power just died. You hear gunshots outside.",
+        choices: [
+            { text: "Barricade the door", next: "barricade" },
+            { text: "Grab NEO and run", next: "runout" }
+        ]
     },
-    light: {
-      id: "light",
-      text: "The light was a trap. You’re captured!",
-      choices: [   //Ending or transitional point
-         { text: "Try to escape", next: "deepcave" },
-        { text: "Wait and observe", next: "listen" }
-    ] 
+
+    barricade: {
+        id: "barricade",
+        text: "You flip your table and push it against the door. NEO growls low — unusual. Something is climbing your fire escape.",
+        choices: [
+            { text: "Peek out the window", next: "windowpeek" },
+            { text: "Hide in the bathroom with NEO", next: "bathroomhide" }
+        ]
     },
-    listen: {
-      id: "listen",
-      text: "You hear rustling — something is out there.",
-      choices: [
-        { text: "Investigate the sound", next: "deepcave" },
-        { text: "Run the other direction", next: "rockypath" }
-      ]
+
+    runout: {
+        id: "runout",
+        text: "You bolt down the hallway with NEO in your backpack. You see your neighbor — half his face is gone, and he's crawling toward you.",
+        choices: [
+            { text: "Kick him and keep running", next: "streetmadness" },
+            { text: "Drag him inside and lock the door", next: "infectedtrap" }
+        ]
     },
-    deepcave: {
-        id: "deepcave",
-        text: "You wander deeper into the cave. It's eerily quiet.",
+
+    windowpeek: {
+        id: "windowpeek",
+        text: "A pale, eyeless creature screeches and smashes through the glass, slicing your chest open. NEO leaps onto its face.",
         choices: [
-          { text: "Keep going", next: "undergroundlake" },
-          { text: "Climb a rocky path", next: "rockypath" }
-      ]
+            { text: "Run while NEO fights", next: "fireescape" },
+            { text: "Help NEO fight it", next: "fightmonster" }
+        ]
     },
-      undergroundlake: {
-        id: "undergroundlake",
-        text: "You reach an underground lake glowing with an eerie light.",
+
+    bathroomhide: {
+        id: "bathroomhide",
+        text: "You curl into the tub with NEO. Heavy steps enter your apartment. Something sniffs the air.",
         choices: [
-          { text: "Swim across", next: "hiddenchamber" },
-          { text: "Look for a boat", next: "boatdock" }
+            { text: "Stay silent", next: "safeescape" },
+            { text: "Slam the door shut and fight", next: "bathroomfight" }
         ]
-      },
-      
-      rockypath: {
-        id: "rockypath",
-        text: "The rocky path crumbles behind you. You're committed now.",
+    },
+
+    infectedtrap: {
+        id: "infectedtrap",
+        text: "Too late. He bites your arm as you try to save him. You feel the infection start. You have minutes.",
         choices: [
-          { text: "Climb higher", next: "cliffledge" },
-          { text: "Try to go back", next: "deadend" }
+            { text: "End it yourself", next: "tragicend" },
+            { text: "Search his apartment for a cure", next: "desperatesearch" }
         ]
-      },
-      
-      hiddenchamber: {
-        id: "hiddenchamber",
-        text: "You emerge into a chamber with glowing crystals.",
+    },
+
+    streetmadness: {
+        id: "streetmadness",
+        text: "The city is chaos. Cars on fire. People screaming. A military truck stops beside you.",
         choices: [
-          { text: "Touch the crystals", next: "vision" },
-          { text: "Hide and wait", next: "ambush" }
+            { text: "Get in", next: "quarantine" },
+            { text: "Run into the woods", next: "forestentry" }
         ]
-      },
-      
-      boatdock: {
-        id: "boatdock",
-        text: "You find a tiny, rickety boat barely floating.",
+    },
+
+    fireescape: {
+        id: "fireescape",
+        text: "You scale the fire escape. NEO jumps back onto your shoulder, bleeding. The city burns below.",
         choices: [
-          { text: "Use the boat", next: "stormyride" },
-          { text: "Repair the boat first", next: "fixboat" }
+            { text: "Climb to the roof", next: "roofsignal" },
+            { text: "Jump onto the neighbor’s balcony", next: "balconytrap" }
         ]
-      },
-      
-      cliffledge: {
-        id: "cliffledge",
-        text: "You reach a narrow ledge overlooking a vast cavern.",
+    },
+
+    fightmonster: {
+        id: "fightmonster",
+        text: "You stab the thing in the eye with a kitchen knife. It shrieks and explodes into a cloud of spores.",
         choices: [
-          { text: "Jump down", next: "softlanding" },
-          { text: "Build a rope to climb", next: "escapeplan" }
+            { text: "Run outside coughing", next: "infectionpath" },
+            { text: "Seal the windows and wait", next: "toxicchamber" }
         ]
-      },
-      
-      deadend: {
-        id: "deadend",
-        text: "It's a dead end. Something is behind you...",
+    },
+
+    safeescape: {
+        id: "safeescape",
+        text: "The thing leaves. You sneak out hours later. You and NEO slip into the shadows, free… for now.",
         choices: [
-          { text: "Turn and face it", next: "monster" },
-          { text: "Hide in the shadows", next: "sneakyescape" }
+            { text: "Head for the mountains", next: "forestentry" },
+            { text: "Search for survivors", next: "survivorcamp" }
         ]
-      },
-      
-      vision: {
-        id: "vision",
-        text: "The crystals show you a vision of the past.",
+    },
+
+    bathroomfight: {
+        id: "bathroomfight",
+        text: "You smash the door into its face, but it grabs you by the throat. NEO rips into its neck. You crush its skull with the toilet lid.",
         choices: [
-          { text: "Follow the vision", next: "mysticpath" },
-          { text: "Break the crystals", next: "badending" }
+            { text: "Escape while it’s down", next: "fireescape" },
+            { text: "Loot your apartment", next: "gearup" }
         ]
-      },
-      
-      ambush: {
-        id: "ambush",
-        text: "Something enters the chamber. You hold your breath.",
+    },
+
+    tragicend: {
+        id: "tragicend",
+        text: "With tears in your eyes, you whisper goodbye to NEO and end it quickly. Your story ends here.",
+        choices: []
+    },
+
+    desperatesearch: {
+        id: "desperatesearch",
+        text: "You find a syringe marked 'EXPERIMENTAL.' You inject it. Everything goes black...",
         choices: [
-          { text: "Attack first", next: "combat" },
-          { text: "Stay hidden", next: "escapechamber" }
+            { text: "Wake up", next: "mutation" },
+            { text: "Let go", next: "tragicend" }
         ]
-      },
-      
-      stormyride: {
-        id: "stormyride",
-        text: "The boat lurches into a storm underground!",
+    },
+
+    militarytruck: {
+        id: "militarytruck",
+        text: "Inside the truck, soldiers aim guns at you. 'Bitten or clean?' one growls.",
         choices: [
-          { text: "Hold on tight", next: "survivethefall" },
-          { text: "Try to steer", next: "lostcurrent" }
+            { text: "Lie: 'Clean.'", next: "quarantine" },
+            { text: "Tell the truth", next: "executed" }
         ]
-      },
-      theend: {
-        id: "theend",
-        text: " Congrats You made it out alive ",
+    },
+
+    forestentry: {
+        id: "forestentry",
+        text: "You vanish into the Olympic forest. It’s dark. Wet. Quiet. Too quiet. NEO hisses.",
+        choices: [
+            { text: "Follow the sound of water", next: "riverrun" },
+            { text: "Climb a tree to look around", next: "treetop" }
+        ]
+    },
+
+    mutation: {
+        id: "mutation",
+        text: "You awaken in pain. Your eyes burn. Your skin pulses. You're not fully human anymore…",
+        choices: [
+            { text: "Embrace the change", next: "darkhero" },
+            { text: "End your own life", next: "tragicend" },
+            { text: "Get back out there", next: "backoutside" },
+        ]
+    },
+    backoutside: {
+        id: "backoutside",
+        text: "You're mutated but you're ready to head back into the streets and maybe find some help",
+        choices: [
+            { text: "Look around", next: "streetmadness" }
+        ]
+
+    },
+
+    balconytrap: {
+        id: "balconytrap",
+        text: "The door is locked. Something behind it slams into the glass. It cracks. You and NEO are trapped.",
+        choices: [
+            { text: "Jump down", next: "anklebreak" },
+            { text: "Try the roof again", next: "roofsignal" }
+        ]
+    },
+    anklebreak: {
+        id: "anklebreak",
+        text: "You don’t think—you just jump.\n\nThe fall is farther than it looked.\n\nYou land hard. Pain rips through your leg like fire. Something cracks. You scream before your breath is stolen by the impact.\n\nNEO tumbles beside you, hissing and dazed.\n\nYou try to move. Can’t. Your ankle is twisted at an unatural angle.\n\nThe thing behind the balcony door crashes through the glass above, shrieking. It leans over the railing, searching.\n\nYou drag yourself toward the treeline, biting down screams. NEO stays by your side, fur bristling, tail low.\n\nBut you're not fast enough.\n\nYou hear footsteps.\n\nThen teeth.",
         choices: []
       },
-    }  
+      
 
-  
-  // This route sends back the story step
-  app.get('/api/steps/:id', (req, res) => { //Pulls matching step from the stroySteps object and sends it back as JSON
+    infectionpath: {
+        id: "infectionpath",
+        text: "You stumble into the street, dizzy. Your veins go black. People run from you now.",
+        choices: [
+            { text: "Beg for help", next: "executed" },
+            { text: "Hide in an alley", next: "mutation" }
+        ]
+    },
+
+    toxicchamber: {
+        id: "toxicchamber",
+        text: "The spores choke you slowly. NEO claws at the walls. You both fade into darkness.",
+        choices: []
+    },
+
+    survivorcamp: {
+        id: "survivorcamp",
+        text: "You find a hidden group living underground. They're armed. Suspicious. But one of them smiles at NEO.  A woman in her forties, face smeared with ash, eyes sharp with survival.\n\nHer gaze drops to NEO.\n\nShe kneels slowly, lips parting in the ghost of a smile. \"You brought a cat?\"\n\nThe others hesitate. Lower their weapons. Just slightly.\n\nShe looks at you. \"If that thing trusts you… maybe we should too.\"\n\nYou exhale for the first time in days. But you don't let your guard down. Not yet.",
+        choices: [
+            { text: "Stay and join them", next: "theend" },
+            { text: "Keep moving", next: "forestentry" }
+        ]
+    },
+
+    gearup: {
+        id: "gearup",
+        text: "You find a crossbow, meds, and cat food. NEO purrs. You’re ready for whatever comes next.",
+        choices: [
+            { text: "Head for the forest", next: "forestentry" },
+            { text: "Search for survivors", next: "survivorcamp" }
+        ]
+    },
+
+    treetop: {
+        id: "treetop",
+        text: "From the top, you see smoke in the distance. NEO suddenly growls. A humanoid figure is climbing the tree from below.",
+        choices: [
+            { text: "Kick it down", next: "fatalfall" },
+            { text: "Leap to another branch", next: "branchesnap" }
+        ]
+    },
+
+    riverrun: {
+        id: "riverrun",
+        text: "You follow the river to a collapsed bridge. A child stands alone on the other side… too still.",
+        choices: [
+            { text: "Call out to them", next: "childtrap" },
+            { text: "Turn back quietly", next: "forestentry" }
+        ]
+    },
+
+    cliffedge: {
+        id: "cliffedge",
+        text: "You and NEO reach a cliff. Below is a chopper landing. You're so close.",
+        choices: [
+            { text: "Jump", next: "softlanding" },
+            { text: "Signal with a flare", next: "rescue" }
+        ]
+    },
+
+    softlanding: {
+        id: "softlanding",
+        text: "You hit the water hard—cold, fast, unforgiving. The current grabs you before you can even scream. NEO yowls, claws digging into your jacket as you're both dragged downstream.\n\nYou thrash, fight to breathe, but it’s no use. The river is stronger. Darker. Endless.\n\nThen—rocks. You slam into them, barely conscious, and somehow claw your way to shore.\n\nNEO limps out beside you, soaked and shivering but alive.\n\nYou're lost. The landscape’s unfamiliar. No roads. No tracks. Just trees and silence.\n\nYou survive on mushrooms, rainwater, and whatever small game you can catch. Days blur.\n\nThen one morning, with NEO pressed against your side, you spot something—metal glinting beneath moss and dirt.\n\nA door. Steel. Bolted. Sunken into the earth.\n\nA bunker.",
+        choices: [
+            { text: "Go inside", next: "survivorcamp" }
+        ]
+    },
+
+    rescue: {
+        id: "rescue",
+        text: "The flare lights the sky. A gunship sees you. A ladder drops. You're lifted into the sky with NEO.",
+        choices: []
+    }, 
+    rescue2: {
+        id: "rescue2",
+  text: "The radio crackles to life. Static. Then a voice—sharp, urgent. \"Copy that. Coordinates locked. ETA two minutes. Hold position.\"\n\nThe forest vibrates with the low thrum of rotor blades. Trees sway as a black gunship slices through the sky, spotlight sweeping through the mist.\n\nA rope ladder drops from the belly of the beast. The soldier grips your arm. \"You’re not dying in this place. Not today.\"\n\nYou climb. NEO clings to your shoulder, tense but silent. The wind roars around you.\n\nBelow, the forest churns with movement—too many shapes to count. But you're already rising, swallowed by the night.",
+  choices: []
+    }, 
+    stranger: {
+        id: "stranger",
+        text: "The masked figure lowers their axe and pulls back the hood. Beneath is a weathered face, scarred and tired—but human.\n\n'About damn time I found you,' they mutter, pulling a small radio from their belt. 'HQ’s been tracking your signal since the breach. We lost you in the hills. Thought you were already one of them.'\n\nYou can barely process it. Rescue? After all this time? NEO growls low, but doesn’t move from your side.\n\nThe soldier kneels to NEO’s level. 'You're one hell of a survivor too, furball.'\n\nThe soldier taps the radio. 'Alpha, I’ve got the package. Requesting immediate evac.'\n\nYou’re not sure what “the package” means. You’re not sure you care.\n\nBut you’re going home. Or… somewhere safe. You hope.",
+        choices: [
+          { text: "Rescued", next: "rescue2" }
+        ]
+      },
+      
+
+    darkhero: {
+        id: "darkhero",
+        text: "You use your new power to hunt the infected. NEO rides your shoulder like a tiny grim reaper. You’ve become legend.",
+        choices: []
+    },
+
+    quarantine: {
+        id: "quarantine",
+        text: "YOU'RE TAKEN, caged, and tested. Days pass. You're declared clean. They give you a weapon and send you out to fight.",
+        choices: [
+            { text: "Escape the base", next: "forestentry" },
+            { text: "Join their ranks", next: "darkhero" }
+        ]
+    },
+
+    executed: {
+        id: "executed",
+        text: "A gunshot. Blackness. NEO screams as they take him away. The end comes fast.",
+        choices: []
+    },
+
+    childtrap: {
+        id: "childtrap",
+        text: "The child opens its mouth — a scream like a siren. Dozens of infected pour from the woods. You have seconds.",
+        choices: [
+            { text: "Fight to the death", next: "tragicend" },
+            { text: "Jump into the river", next: "softlanding" }
+        ]
+    },
+
+    branchesnap: {
+        id: "branchesnap",
+        text: "You fall. The wind is knocked out of you. NEO lands on your chest, shaken but alert. You scramble to your feet, but they're already there—barefoot things with torn faces and blood-caked teeth. They wear remnants of people they used to be, twitching with unnatural jerks. You can hear their breath—wet, snarling. The infection is brutal and unwavering.",
+        choices: [
+          { text: "Run", next: "forestentry" },
+          { text: "Hide under the roots", next: "rootcrawl" },
+          { text: "Throw something to distract them", next: "distractionthrow" }
+        ]
+      },
+      rootcrawl: {
+        id: "rootcrawl",
+        text: "You slide beneath the tangled roots of a massive cedar tree. The air is thick with rot and damp earth. NEO squeezes in beside you, tail lashing. The infected sniff the air, footsteps inches from your hiding spot. One drops to its knees, staring right at the roots.",
+        choices: [
+          { text: "Stay perfectly still", next: "rootend" },
+          { text: "Lash out with a branch", next: "rootfight" }
+        ]
+      },
+      rootend: {
+        id: "rootend",
+        text: "You hold your breath. NEO doesn’t move. The creature's face presses into the roots—then it starts gnawing. Soil falls onto your chest as it tears through the wood.\n\nYou never stood a chance. Buried alive by madness and teeth.",
+        choices: []
+      },
+      rootfight: {
+        id: "rootfight",
+        text: "You jab the branch through the roots. It screeches, stumbling back. You crawl out fast, dragging NEO. But more are coming—your move bought seconds, not safety.\n\nA figure appears—a masked person swinging a fire axe.\n\nYou survive. For now. But you owe a stranger your life… and strangers are rarely kind.",
+        choices: [
+            {text: "Whos this stranger..", next: "stranger"}
+        ]
+      },   
+      distractionthrow: {
+        id: "distractionthrow",
+        text: "You grab a rock and hurl it deep into the brush. The sound snaps the ferals' heads around. Three of them bolt toward it, screeching.\n\nBut one stays behind, drooling. It starts crawling toward you on all fours.",
+        choices: [
+          { text: "Sneak past it with NEO", next: "sneakpastinfected" },
+          { text: "Kick it and run", next: "kickrunend" }
+        ]
+      },
+      sneakpastinfected: {
+        id: "sneakpastinfected",
+        text: "You move slow, every breath measured. NEO pads beside you, silent. The creature's back is to you—close enough to smell the blood on its skin.\n\nThen a twig snaps.\n\nIt spins and lunges. You scream as it tackles you into the dirt.\n\nNEO runs.\n\nYou won’t get back up.",
+        choices: []
+      },
+      kickrunend: {
+        id: "kickrunend",
+        text: "You slam your boot into its face. Bone cracks under the force. It lets out a shriek that echoes through the trees.\n\nYou take off, lungs burning, NEO darting ahead of you.\n\nJust as the screeching behind you multiplies, a figure steps into your path—broad-shouldered, masked, holding a bloodstained fire axe. No words. Just a nod.\n\nThe ferals don’t follow.\n\nYou’re not sure if you’ve found help… or traded one danger for another.",
+        choices: [
+            {text: "Whos this stranger..", next: "stranger"}
+        ]
+      },
+      
+         
+    roofsignal: {
+        id: "roofSignal",
+        text: "You and NEO climb to the top of the radio tower, your boots slipping on slick metal. You rig the old antenna, power surging through ancient wires as you hit the switch. A crackle... then a signal fires off into the void.\n\nYou wait. NEO paces.\n\nRed lights begin to blink in the distance—drones. Not rescue. Not hope. The government still watches, still hunts. They triangulated your position.\n\nWithin minutes, the horizon glows with flame. A barrage of missiles rains down as NEO lets out a low, guttural growl.\n\nYou grab your cat, holding them close as everything burns. The price of hope... was too high.",
+        choices: []
+    },
+
+    fatalfall: {
+        id: "fatalfall",
+        text: "You kick hard. The thing falls but grabs your ankle. You both plummet. NEO wails. Darkness.",
+        choices: []
+    },
+
+    theend: {
+        id: "theend",
+        text: "You and NEO have survived… for now. The world is broken, but you're not. You’ve made it another day.",
+        choices: []
+    }
+};
+
+
+
+
+// start: {
+//   id: "start",
+//   text: "You wake up in a dark forest. What do you do?",
+//   choices: [
+//     { text: "Walk toward the strange light", next: "light" },
+//     { text: "Stay still and listen", next: "listen" }
+//   ]
+// },
+// light: {
+//   id: "light",
+//   text: "The light was a trap. You’re captured!",
+//   choices: [   //Ending or transitional point
+//      { text: "Try to escape", next: "deepcave" },
+//     { text: "Wait and observe", next: "listen" }
+// ] 
+// },
+// listen: {
+//   id: "listen",
+//   text: "You hear rustling — something is out there.",
+//   choices: [
+//     { text: "Investigate the sound", next: "deepcave" },
+//     { text: "Run the other direction", next: "rockypath" }
+//   ]
+// },
+// deepcave: {
+//     id: "deepcave",
+//     text: "You wander deeper into the cave. It's eerily quiet.",
+//     choices: [
+//       { text: "Keep going", next: "undergroundlake" },
+//       { text: "Climb a rocky path", next: "rockypath" }
+//   ]
+// },
+//   undergroundlake: {
+//     id: "undergroundlake",
+//     text: "You reach an underground lake glowing with an eerie light.",
+//     choices: [
+//       { text: "Swim across", next: "hiddenchamber" },
+//       { text: "Look for a boat", next: "boatdock" }
+//     ]
+//   },
+
+//   rockypath: {
+//     id: "rockypath",
+//     text: "The rocky path crumbles behind you. You're committed now.",
+//     choices: [
+//       { text: "Climb higher", next: "cliffledge" },
+//       { text: "Try to go back", next: "deadend" }
+//     ]
+//   },
+
+//   hiddenchamber: {
+//     id: "hiddenchamber",
+//     text: "You emerge into a chamber with glowing crystals.",
+//     choices: [
+//       { text: "Touch the crystals", next: "vision" },
+//       { text: "Hide and wait", next: "ambush" }
+//     ]
+//   },
+
+//   boatdock: {
+//     id: "boatdock",
+//     text: "You find a tiny, rickety boat barely floating.",
+//     choices: [
+//       { text: "Use the boat", next: "stormyride" },
+//       { text: "Repair the boat first", next: "fixboat" }
+//     ]
+//   },
+
+//   cliffledge: {
+//     id: "cliffledge",
+//     text: "You reach a narrow ledge overlooking a vast cavern.",
+//     choices: [
+//       { text: "Jump down", next: "softlanding" },
+//       { text: "Build a rope to climb", next: "escapeplan" }
+//     ]
+//   },
+
+//   deadend: {
+//     id: "deadend",
+//     text: "It's a dead end. Something is behind you...",
+//     choices: [
+//       { text: "Turn and face it", next: "monster" },
+//       { text: "Hide in the shadows", next: "sneakyescape" }
+//     ]
+//   },
+
+//   vision: {
+//     id: "vision",
+//     text: "The crystals show you a vision of the past.",
+//     choices: [
+//       { text: "Follow the vision", next: "mysticpath" },
+//       { text: "Break the crystals", next: "badending" }
+//     ]
+//   },
+
+//   ambush: {
+//     id: "ambush",
+//     text: "Something enters the chamber. You hold your breath.",
+//     choices: [
+//       { text: "Attack first", next: "combat" },
+//       { text: "Stay hidden", next: "escapechamber" }
+//     ]
+//   },
+
+//   stormyride: {
+//     id: "stormyride",
+//     text: "The boat lurches into a storm underground!",
+//     choices: [
+//       { text: "Hold on tight", next: "survivethefall" },
+//       { text: "Try to steer", next: "lostcurrent" }
+//     ]
+//   },
+//   theend: {
+//     id: "theend",
+//     text: " Congrats You made it out alive ",
+//     choices: []
+//   },
+
+
+
+// This route sends back the story step
+app.get('/api/steps/:id', (req, res) => { //Pulls matching step from the stroySteps object and sends it back as JSON
     const step = storySteps[req.params.id];
     if (!step) {
-      return res.status(404).json({ error: 'Step not found' });
+        return res.status(404).json({ error: 'Step not found' });
     }
     res.json(step); //send story step as JSON
-  });
-  
+});
+
 
 //----------START SERVER LISTENER
 
