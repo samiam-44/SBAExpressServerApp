@@ -5,6 +5,12 @@ const userNameInput = document.querySelector('#userProfileForm #userName');
 
 let currentUserName = '';
 
+//Change cat name to users choice
+function personalizeText(text, catName) {
+    return text.replace(/\bNEO\b/g, catName);
+  }
+  
+
 // This default function is called to start if no stepID is provided
 async function loadStep(stepId = 'start') {
   try {
@@ -20,22 +26,24 @@ async function loadStep(stepId = 'start') {
 }
 //Take a step object and render it into the HTML
 function renderStep(step) {
+    const catName = localStorage.getItem('catName') || 'NEO'; // find Neo cat name to replace
+    const personalizedText = personalizeText(step.text, catName); // replace NEO with cat's name
     //HTML string with the step's text and choices 
-  const html = `
-    <p>${step.text}</p>
+    const html = `
+    <p>${personalizedText}</p>
     <div class="choices">
       ${step.choices
-        .map(  // Map each choice into a button that loads the nect step when clicked
-          (choice) =>
-            `<button onclick="handleUserChoice('${step.id}', '${choice.value}', '${choice.next}')">${choice.text}</button>` //basically like an event listener
-        )
+        .map((choice) => {
+          const personalizedChoiceText = personalizeText(choice.text, catName); // Replace in choice text too
+          return `<button onclick="handleUserChoice('${step.id}', '${choice.text}', '${choice.next}')">${personalizedChoiceText}</button>`;
+        })
         .join('')}
     </div>
   `;
 //Set the story container's content to the generated HTML
   storyContainer.innerHTML = html;
 }
-currentUserName = userName;
+
 
 //Handler for saving and loading
 function handleUserChoice(stepId, choiceText, nextStepId) {
@@ -101,7 +109,8 @@ userProfileForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const userName = document.querySelector('#userProfileForm #userName').value;
     const catName = document.querySelector('#userProfileForm #catName').value;
-  
+    localStorage.setItem('catName', catName); // Save cat name to localStorage
+
     try {
       const res = await fetch('/users', {
         method: 'POST',
