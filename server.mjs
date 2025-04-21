@@ -2,6 +2,7 @@
 import express from 'express';
 import userRoutes from './ROUTES/users.mjs'
 import { storySteps } from './ROUTES/story.mjs';
+import choiceRoutes from './ROUTES/choices.mjs';
 
 
 const app = express();
@@ -23,6 +24,7 @@ app.use((req, res, next) => { //Logs every request to the server
 });
 // ------------ROUTES
 app.use('/users', userRoutes); //connects user routes to /users
+app.use('/choices', choiceRoutes); 
 //app.get('/', (req, res) => {
 //  res.send('Hello');
 //})
