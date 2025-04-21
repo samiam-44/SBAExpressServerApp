@@ -30,8 +30,29 @@ function renderStep(step) {
 //Set the story container's content to the generated HTML
   storyContainer.innerHTML = html;
 }
+//function send the users choice to the server to be saved
+function handleChoice(userName, stepId, chosenOption) {
+    // Send a POST request to the choices file
+    fetch('/choices', {
+      method: 'POST', // HTTP method for creating data
+      headers: { 'Content-Type': 'application/json' }, // Tell the server im sending JSON
+      body: JSON.stringify({
+        userName: userName, 
+        step: stepId, // The step in the story where the choice was made
+        choice: chosenOption    // The choice the user picked
+      })
+    })
+    .then(res => res.json()) // Parse the server response as JSON
+    .then(data => {
+      console.log('Choice recorded:', data);
+    })
+    .catch(err => {
+      console.error('Error recording choice:', err);
+    });
+  }
+  
 
-// After rendering, add event listeners to each button
+
 // const buttons = storyContainer.querySelectorAll('.choices button');
 // buttons.forEach((button) => {
 //   button.addEventListener('click', () => {
