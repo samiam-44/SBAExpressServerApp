@@ -1,43 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Horror Adventure Game</title>
-  <link rel="stylesheet" href="./styles.css">
+    <meta charset="UTF-8" />
+    <title>Horror Adventure Game</title>
+    <link rel="stylesheet" href="./styles.css">
 
 </head>
-<body>
-  <h1>Horror Adventure Game</h1>
-  <div id="intro-container">
-    <h2>Welcome to My First RPG</h2>
-    <p>Before you begin, please enter your name and your companion cat's name:</p>
-    <form id="userProfileForm">
-      <label for="userName">Your Name:</label>
-      <input type="text" id="userName" name="userName" required>
-      <label for="catName">Cat's Name:</label>
-      <input type="text" id="catName" name="catName" required>
-      <button type="submit">Start Game</button>
-    </form>
-  </div>
-  
-  <div id="intro-text" style="display:none;">
-    <p>Seattle, Washington. October 17, 2025. Day One.</p>
-    <p>You were supposed to be heading to work. Just another gray morning in the Pacific Northwest. But the emergency alerts started pinging before you even got your boots on. Something about violent outbreaks... people attacking each other… hospitals overwhelmed. You thought it was another flu scare—until the screams started echoing outside your apartment.</p>
-    <p>You’re ex-military, discharged two years ago. You’ve seen chaos before, but nothing like this.</p>
-    <p>Now you're barricaded inside with your only companion, your cat NEO, heart racing as the city descends into madness. The streets are crawling with chaos, and sirens have already gone silent. Whatever this is, it’s not going away. You’ll have to move. Fight. Survive.</p>
-    <p>The world you knew ended this morning. What happens next... is up to you.</p>
-    <div id="story-container">
-      <p>Loading story...</p>
-    </div>
-  </div>
-  
-  <form id="deleteChoicesForm" style="display: none;">
-    <label for="userName">User Name:</label>
-    <input type="text" id="userName" />
-    <button type="submit">Delete Choices</button>
-  </form>
-  
 
-  <script src="main.js"></script>
+<body>
+    <h1>Horror Adventure Game</h1>
+    <div id="intro-container">
+        <h2>Welcome to My First RPG</h2>
+        <p>Before you begin, please enter your name and your companion cat's name:</p>
+        <form id="userProfileForm">
+            <label for="userName">Your Name:</label>
+            <input type="text" id="userName" name="userName" required>
+            <label for="catName">Cat's Name:</label>
+            <input type="text" id="catName" name="catName" required>
+            <button type="submit">Start Game</button>
+        </form>
+    </div>
+
+
+    <div id="intro-text" style="display:none;">
+        <p>Seattle, Washington. October 17, 2025. Day One.</p>
+        <p>You were supposed to be heading to work. Just another gray morning in the Pacific Northwest. But the
+            emergency alerts started pinging before you even got your boots on. Something about violent outbreaks...
+            people attacking each other… hospitals overwhelmed. You thought it was another flu scare—until the screams
+            started echoing outside your apartment.</p>
+        <p>You’re ex-military, discharged two years ago. You’ve seen chaos before, but nothing like this.</p>
+        <p>Now you're barricaded inside with your only companion, your cat NEO, heart racing as the city descends into
+            madness. The streets are crawling with chaos, and sirens have already gone silent. Whatever this is, it’s
+            not going away. You’ll have to move. Fight. Survive.</p>
+        <p>The world you knew ended this morning. What happens next... is up to you.</p>
+        <div id="story-container">
+            <p>Loading story...</p>
+        </div>
+    </div>
+    <button id="profileBtn">Progress</button>
+    <div id="profileModal">
+        <h3 id="profileHeader"></h3>
+        <p id="catNameDisplay"></p>
+        <h4>Your Choices:</h4>
+        <ul id="choicesList"></ul>
+        <form id="deleteChoicesForm" style="display: none;">
+            <label for="theDelete">User Name:</label>
+            <input type="text" id="userName" />
+            <button id="deleteChoicesBtn" type="submit">Delete Choices</button>
+        </form>
+
+    </div>
+
+
+
+    <script src="main.js"></script>
 </body>
+
 </html>

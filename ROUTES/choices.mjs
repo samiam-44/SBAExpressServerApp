@@ -1,15 +1,15 @@
 import express from 'express'
 const router = express.Router();
 
-const playerChoices = {} //object to store player choices
+const userChoices = {} //object to store user choices
 
 router.post('/', (req, res) => {
-    const { playerName, step, choice } = req.body;//Take needed info from the request body
+    const { userName, step, choice } = req.body;//Take needed info from the request body
    
-    if (!playerChoices[playerName]) { //array for new player
-        playerChoices[playerName] = [];
+    if (!userChoices[userName]) { //array for new user
+        userChoices[userName] = [];
     }
-    playerChoices[playerName].push({ step, choice });//step and choices user made gets stored
+    userChoices[userName].push({ step, choice });//step and choices user made gets stored
 
     res.status(201).json({ message: "Choice recorded successfully!"});
 });
@@ -18,20 +18,28 @@ router.post('/', (req, res) => {
 router.get('/:name', (req, res) => {
     const { name } = req.params //Grabs the users name from url
     // look up all choices for player
-    const choices = playerChoices[name];
+    const choices = userChoices[name];
      
     if (!choices) {
         return res.status(404).json({ error: "No choices found for this user or user not found" })
     }
-    res.json({ playerName: name, choices });
+    res.json({ userName: name, choices });
 });
+router.get('/', (req, res) => {
+    const allChoices = Object.entries(userChoices).flatMap(([userName, choices]) =>
+      choices.map(choice => ({ userName, ...choice }))
+    );
+    res.json({ choices: allChoices });
+  });
+  
+  
 //PUT to update a choice by what step it was made at
 router.put('/:name/:step', (req, res) => {
     const { name, step } = req.params;
     const { newChoice } = req.body;
 
     //check if player exists
-    const choices = playerChoices[name];
+    const choices = userChoices[name];
     if (!choices) {
         return res.status(404).json({ error: "User not found"});
 
@@ -51,12 +59,12 @@ router.put('/:name/:step', (req, res) => {
 router.delete('/:name', (req, res) => {
     const { name } = req.params;
 
-    if (!playerChoices[name]) {
+    if (!userChoices[name]) {
         return res.status(404).json({ error: "User not found" });
     }
 
     // Delete the users choices
-    delete playerChoices[name];
+    delete userChoices[name];
     res.json({ message: `All choices deleted for ${name}` });
 });
 

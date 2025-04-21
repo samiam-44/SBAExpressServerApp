@@ -55,7 +55,7 @@ function handleUserChoice(stepId, choiceText, nextStepId) {
 //function send the users choice to the server to be saved
 function handleChoice(userName, stepId, chosenOption) {
     // Send a POST request to the choices file
-    fetch('/choices', {
+    fetch('/api/choices', {
       method: 'POST', // HTTP method for creating data
       headers: { 'Content-Type': 'application/json' }, // Tell the server im sending JSON
       body: JSON.stringify({
@@ -83,10 +83,11 @@ async function checkUserProfileAndChoices(userName) {
       const data = await res.json();
   
       if (data.choices && data.choices.length > 0) {
-        deleteChoicesContainer.style.display = 'block'; // Show the delete form if there are choices
-      } else {
-        deleteChoicesContainer.style.display = 'none'; // Hide the delete form if no choices
-      }
+          // Show the delete button if there are choices
+          document.getElementById('deleteChoicesBtn').style.display = 'block';
+        } else {
+          document.getElementById('deleteChoicesBtn').style.display = 'none'; // Hide if no choices
+        }
     } catch (err) {
       console.error('Error fetching user choices:', err);
       deleteChoicesContainer.style.display = 'none'; // Hide if there’s an error fetching data
@@ -128,29 +129,82 @@ userProfileForm.addEventListener('submit', async (e) => {
       currentUserName = userName; // Update the global username
       checkUserProfileAndChoices(userName); // Delete button shows if user has choices recorded
       loadStep(); // Start the story
+      document.getElementById('profileBtn').style.display = 'block';
+
     } catch (err) {
       console.error('Failed to create user:', err);
     }
   });
+
   
   // Add an event listener to form when it's submitted
   deleteForm.addEventListener('submit', function(event) {
     event.preventDefault(); 
-  });
+  
     // Get users name from  input field
-    const userName = userNameInput.value;
+    const userName = currentUserName || userNameInput.value;
 
-// Add an event listener to form when it's submitted
-deleteForm.addEventListener('submit', function(event) {
-    event.preventDefault(); 
+ // Send a DELETE request to the server
+ fetch(`/api/choices/${userName}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then(function(response) {
+      if (response.ok) {
+        alert(`Choices for ${userName} have been deleted`);
+        window.location.reload(); // Reload to reflect changes
+      } else {
+        response.json().then(function(data) {
+          alert(data.error || 'An error occurred');
+        });
+      }
+    })
+    .catch(function(error) {
+      console.error('Error:', error);
+      alert('An error occurred while deleting choices');
+    });
+});
 
-    // Get users name from  input field
-    const userName = userNameInput.value;
+   
+
+    //REveal profile button after submission
+    document.getElementById('profileBtn').addEventListener('click', async () => {
+        const profileModal = document.getElementById('profileModal');
+        const userName = currentUserName;
+        const catName = localStorage.getItem('catName') || 'NEO';
+        // Fill in the header and cat name
+  document.getElementById('profileHeader').textContent = `${userName}'s Progress`;
+  document.getElementById('catNameDisplay').textContent = `Your Cat: ${catName}`;
+  //Fetch choices for modale
+  try {
+    const response = await fetch('/api/choices');
+    const { choices } = await response.json();
+  
+    if (!Array.isArray(choices)) {
+      return console.warn('No choices found in the response.');
+    }
+    const list = document.getElementById('choicesList');
+    choices.forEach(choice => {
+      const li = document.createElement('li');
+      li.textContent = `Step: ${choice.step}, Choice: ${choice.choice}`;
+      list.appendChild(li);
+    });
+  } catch (err) {
+    console.error('Failed to fetch choices:', err);
+  }
+  
+
+  // Toggle display
+  profileModal.style.display = profileModal.style.display === 'none' ? 'block' : 'none';
+});
 
     
+      
 
     // Send a DELETE request to the server
-    fetch(`/choices/${userName}`, {  // The URL includes the user name
+    fetch(`/api/choices/${userName}`, {  // The URL includes the user name
         method: 'DELETE', // type of request being sent
         headers: {
             'Content-Type': 'application/json', // Tells the server its sending JSON
@@ -170,7 +224,7 @@ deleteForm.addEventListener('submit', function(event) {
         console.error('Error:', error);
         alert('An error occurred while deleting choices');
     });
-});
+
 
 
 // const buttons = storyContainer.querySelectorAll('.choices button');

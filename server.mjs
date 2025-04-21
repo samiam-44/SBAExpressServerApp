@@ -29,9 +29,9 @@ app.use((req, res, next) => { //Logs every request to the server
 });
 // ------------ROUTES
 app.use('/users', userRoutes); //connects user routes to /users
-app.use('/choices', choiceRoutes); 
+app.use('/api/choices', choiceRoutes); 
 
-app.get('/choose', (req, res) => {
+app.get('/api/choose', (req, res) => {
     res.render('choiceForm');
   });
 
