@@ -22,7 +22,7 @@ function renderStep(step) {
       ${step.choices
         .map(  // Map each choice into a button that loads the nect step when clicked
           (choice) =>
-            `<button onclick="loadStep('${choice.next}')">${choice.text}</button>` //basically like an event listener
+            `<button onclick="handleUserChoice('${step.id}', '${choice.value}', '${choice.next}')">${choice.text}</button>` //basically like an event listener
         )
         .join('')}
     </div>
@@ -30,6 +30,13 @@ function renderStep(step) {
 //Set the story container's content to the generated HTML
   storyContainer.innerHTML = html;
 }
+//Handler for saving and loading
+function handleUserChoice(stepId, choiceValue, nextStepId) {
+    const userName = prompt("Enter your name:") || "Guest"; // replace later with better login system
+    handleChoice(userName, stepId, choiceValue); // Save to server
+    loadStep(nextStepId); // Move to next step
+  }
+  
 //function send the users choice to the server to be saved
 function handleChoice(userName, stepId, chosenOption) {
     // Send a POST request to the choices file

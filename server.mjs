@@ -8,6 +8,11 @@ import choiceRoutes from './ROUTES/choices.mjs';
 const app = express();
 const PORT = 3000 || 3001;
 
+//Views 
+app.set('view engine', 'pug');
+app.set('views', './views');
+
+
 //----------MIDDLEWARE
 app.use(express.json()); //Parse incoming Json
 app.use(express.static('public')); //Serve static files (HTML and CSS)from "public" folder
@@ -25,6 +30,11 @@ app.use((req, res, next) => { //Logs every request to the server
 // ------------ROUTES
 app.use('/users', userRoutes); //connects user routes to /users
 app.use('/choices', choiceRoutes); 
+
+app.get('/choose', (req, res) => {
+    res.render('choiceForm');
+  });
+  
 //app.get('/', (req, res) => {
 //  res.send('Hello');
 //})
