@@ -1,0 +1,10 @@
+h1 User Profile
+p Name: #{user.name}
+p Cat's Name: #{user.petName}
+p Progress: #{user.progress.join(', ')}
+
+h2 Delete Choices
+form(id="deleteChoicesForm")
+  label(for="userName") Enter Your Name to Delete Choices:
+  input(type="text", name="userName", id="userName", required)
+  button(type="submit") Delete Choices

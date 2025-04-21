@@ -31,9 +31,9 @@ function renderStep(step) {
   storyContainer.innerHTML = html;
 }
 //Handler for saving and loading
-function handleUserChoice(stepId, choiceValue, nextStepId) {
+function handleUserChoice(stepId, choiceText, nextStepId) {
     const userName = prompt("Enter your name:") || "Guest"; // replace later with better login system
-    handleChoice(userName, stepId, choiceValue); // Save to server
+    handleChoice(userName, stepId, choiceText); // Save to server
     loadStep(nextStepId); // Move to next step
   }
   
@@ -58,6 +58,40 @@ function handleChoice(userName, stepId, chosenOption) {
     });
   }
   
+//Profile and delete
+
+const deleteForm = document.getElementById('deleteChoicesForm');
+const userNameInput = document.getElementById('userName');
+
+// Add an event listener to form when it's submitted
+deleteForm.addEventListener('submit', function(event) {
+    event.preventDefault(); 
+
+    // Get users name from  input field
+    const userName = userNameInput.value;
+
+    // Send a DELETE request to the server
+    fetch(`/choices/${userName}`, {  // The URL includes the user name
+        method: 'DELETE', // type of request being sent
+        headers: {
+            'Content-Type': 'application/json', // Tells the server its sending JSON
+        },
+    })
+    .then(function(response) {
+        if (response.ok) {
+            alert(`Choices for ${userName} have been deleted`);
+            window.location.reload(); // This reloads the page to reflect the changes
+        } else {
+            response.json().then(function(data) {
+                alert(data.error || 'An error occurred');
+            });
+        }
+    })
+    .catch(function(error) {
+        console.error('Error:', error);
+        alert('An error occurred while deleting choices');
+    });
+});
 
 
 // const buttons = storyContainer.querySelectorAll('.choices button');

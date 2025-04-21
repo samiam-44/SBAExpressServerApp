@@ -34,6 +34,18 @@ app.use('/choices', choiceRoutes);
 app.get('/choose', (req, res) => {
     res.render('choiceForm');
   });
+  app.get('/profile/:name', (req, res) => {
+    const { name } = req.params; // the user's name from the URL
+    const user = user.find(u => u.name === name); // Find the user by name
+
+    if (!user) {
+        return res.status(404).json({ error: "User not found" });
+    }
+
+    res.render('profile', { user }); // Render profile page with the user data
+});
+
+  
   
 //app.get('/', (req, res) => {
 //  res.send('Hello');

@@ -1,14 +1,28 @@
 doctype html
 html
   head
-    title Make a Choice
+    title Choose Your Path
     link(rel="stylesheet", href="/styles.css")
   body
     h1 Choose Your Path
-    // container will be dynamically filled with story and choices by main.js
-    div#story-container
-      // Initially empty but will be filled with story text and buttons
 
+    // Story container where main.js will inject story content
+    div#story-container
+
+    h2 Reset Your Game
+    form(action="/choices/delete", method="POST")
+      label(for="playerName") Enter Your Name to Delete Choices:
+      input(type="text", name="playerName", required)
+      button(type="submit") Delete Choices
+
+    h2 Create Your Survivor
+    form(action="/users", method="POST")
+      label(for="username") Your Name:
+      input(type="text", name="username", required)
+
+      label(for="petName") Cat Companion Name (optional):
+      input(type="text", name="petName")
+      
+      button(type="submit") Start your story..
 
     script(src="/main.js")
-
