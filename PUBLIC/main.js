@@ -1,6 +1,6 @@
 const storyContainer = document.getElementById('story-container');
 const deleteForm = document.getElementById('deleteChoicesForm');
-const deleteChoicesContainer = document.getElementById('deleteChoicesForm'); // This is the container to show/hide
+const deleteChoicesContainer = document.getElementById('deleteChoicesContainer'); // This is the container to show/hide
 const userNameInput = document.querySelector('#userProfileForm #userName');
 
 let currentUserName = '';
@@ -81,12 +81,12 @@ async function checkUserProfileAndChoices(userName) {
     try {
       const res = await fetch(`/api/choices/${userName}`); // Endpoint to check choices for the user
       const data = await res.json();
-  
+ 
       if (data.choices && data.choices.length > 0) {
           // Show the delete button if there are choices
-          document.getElementById('deleteChoicesBtn').style.display = 'block';
+          deleteChoicesContainer.style.display = 'block';
         } else {
-          document.getElementById('deleteChoicesBtn').style.display = 'none'; // Hide if no choices
+            deleteChoicesContainer.style.display = 'none'; // Hide if no choices
         }
     } catch (err) {
       console.error('Error fetching user choices:', err);
@@ -94,17 +94,17 @@ async function checkUserProfileAndChoices(userName) {
     }
   }
   
-  // Profile creation
-  async function createUserProfile() {
-    const userName = userNameInput.value || 'Guest'; // Default to 'Guest' if no input
-    await fetch('/profile', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userName })
-    });
+//   // Profile creation
+//   async function createUserProfile() {
+//     const userName = userNameInput.value || 'Guest'; // Default to 'Guest' if no input
+//     await fetch('/profile', {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify({ userName })
+//     });
   
-    checkUserProfileAndChoices(userName); // Check if this user has choices
-  }
+//     checkUserProfileAndChoices(userName); // Check if this user has choices
+//   }
 // Profile creation (now includes catName)
 userProfileForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -126,6 +126,9 @@ userProfileForm.addEventListener('submit', async (e) => {
       document.getElementById('intro-container').style.display = 'none';
       document.getElementById('intro-text').style.display = 'block';
   
+          // Hide intro form and show intro text
+    document.getElementById('intro-container').style.display = 'none';
+    document.getElementById('intro-text').style.display = 'block';
       currentUserName = userName; // Update the global username
       checkUserProfileAndChoices(userName); // Delete button shows if user has choices recorded
       loadStep(); // Start the story
