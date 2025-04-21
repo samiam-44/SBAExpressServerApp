@@ -10,6 +10,14 @@ app.use(express.static('public')); //Serve static files (HTML and CSS)from "publ
 app.use((req, res, next) => { //Logs every request to the server
     console.log(`[LOG] ${req.method} ${req.url}`); //Logs the http method and URL
     next(); //Call the next middleware or route handler
+    //logs the current time of every incoming request
+    app.use((req, res, next) => {
+    //creates a timestamp in ISO format EXAMPLE(2025-04-19T20:34:23.456Z)
+        const timestamp = new Date().toISOString();
+        console.log(`[TIME] ${timestamp}`);
+        next();
+
+    })
 });
 // ------------ROUTES
 //app.get('/', (req, res) => {
@@ -555,6 +563,11 @@ app.get('/api/steps/:id', (req, res) => { //Pulls matching step from the stroySt
         return res.status(404).json({ error: 'Step not found' });
     }
     res.json(step); //send story step as JSON
+});
+//----------ERROR HANDLING MIDDLE WARE
+app.use((err, req, res, next) => {
+    console.error('[ERROR]', err.stack); //logs full error stack for easy debugging
+res.status(500).json({ error: 'Server failed.'});
 });
 
 
