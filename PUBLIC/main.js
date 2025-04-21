@@ -227,7 +227,14 @@ userProfileForm.addEventListener('submit', async (e) => {
         console.error('Error:', error);
         alert('An error occurred while deleting choices');
     });
-
+// //Hide intro after user starts
+// document.getElementById('startStoryBtn').addEventListener('click', () => {
+//     document.getElementById('intro-text').style.display = 'none'; // hide intro
+//     document.getElementById('story-container').style.display = 'block'; // show game
+    
+// });
+  
+  
 
 
 // const buttons = storyContainer.querySelectorAll('.choices button');
