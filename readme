@@ -35,5 +35,12 @@ Ensure that the program runs without errors (comment out things that do not work
 
 
 ----------APP explained
+My app is a zombieish horror RPG sort of story game you get to pick your outcome
+The story is AI generated but i pieced it all together in the app so it works. The process took hours.
+The user can input their name and the name of the cat companion as well as delete their choices that are being recorded. There are a few more things i want to add like the styling is super simple and I wanted the intro to not display after user hits a start or next button. It definitly a project i want to come back to
 
+I changed my mind a lot so I feel like there is a ton of code in there that needs to be cleaned up but I did run out of time so this the best i could do. Putting togther a working story was probably the hardest part of this whole project. So its definitely not the best. I think a good RPG needs to be pretty massive and this one is really short and abrupt.
 
+I did simple CSS i wanted to go back and edit the font and add pictures and maybe background music. 
+
+And lastly my HTML is saying working tree next to it and the format is weird Im not one hundred percet sure what thats about.
