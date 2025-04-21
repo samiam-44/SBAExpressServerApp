@@ -25,6 +25,42 @@ router.get('/:name', (req, res) => {
     }
     res.json({ playerName: name, choices });
 });
+//PUT to update a choice by what step it was made at
+router.put('/:name/:step', (req, res) => {
+    const { name, step } = req.params;
+    const { newChoice } = req.body;
+
+    //check if player exists
+    const choices = playerChoices[name];
+    if (!choices) {
+        return res.status(404).json({ error: "User not found"});
+
+    }
+    //Find the specific step 
+    const choiceToUpdate = choices.find(c => c.step == step);
+    if (!choiceToUpdate) {
+        return res.status(404).json({ error: "Step not found for this user"})
+    }
+
+    //update choice
+    choiceToUpdate.choice = newChoice;
+    res.json({ message: "Choice updated", updated: choiceToUpdate });
+});
+
+//Delete-- Remove all choices for the user 
+router.delete('/:name', (req, res) => {
+    const { name } = req.params;
+
+    if (!playerChoices[name]) {
+        return res.status(404).json({ error: "User not found" });
+    }
+
+    // Delete the users choices
+    delete playerChoices[name];
+    res.json({ message: `All choices deleted for ${name}` });
+});
+
+
 
 
 
