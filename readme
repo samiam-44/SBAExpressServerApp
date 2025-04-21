@@ -1,12 +1,12 @@
 
 -----------REQUIREMENTS------------------
-Create and use at least two pieces of custom middleware.
+-DONE- Create and use at least two pieces of custom middleware.
 5%
-Create and use error-handling middleware.
+-DONE- Create and use error-handling middleware.
 5%
-Use at least three different data categories (e.g., users, posts, or comments).
+NEED TWO MORE --Use at least three different data categories (e.g., users, posts, or comments).
 5%
-Utilize reasonable data structuring practices.
+-DONE-Utilize reasonable data structuring practices.
 5%
 Create GET routes for all data that should be exposed to the client.
 5%
@@ -27,7 +27,7 @@ Adhere to the guiding principles of REST.
 Create and render at least one view using a view template and template engine. This can be a custom template engine or a third-party engine.
 If you are stuck on how to approach this, think about ways you could render the current state of your API's data for easy viewing.
 8%
-Use simple CSS to style the rendered views.
+DONE Use simple CSS to style the rendered views.
 Note: This is not a test of design; it is a test of serving static files using Express. The CSS can be very simple.
 2%
 Include a form within a rendered view that allows for interaction with your RESTful API.
