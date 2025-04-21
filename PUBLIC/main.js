@@ -1,7 +1,10 @@
 const storyContainer = document.getElementById('story-container');
 const deleteForm = document.getElementById('deleteChoicesForm');
-const userNameInput = document.getElementById('userName');
-const deleteChoicesForm = document.getElementById('deleteChoicesForm');
+const deleteChoicesContainer = document.getElementById('deleteChoicesForm'); // This is the container to show/hide
+const userNameInput = document.querySelector('#userProfileForm #userName');
+
+let currentUserName = '';
+
 // This default function is called to start if no stepID is provided
 async function loadStep(stepId = 'start') {
   try {
@@ -32,12 +35,14 @@ function renderStep(step) {
 //Set the story container's content to the generated HTML
   storyContainer.innerHTML = html;
 }
+currentUserName = userName;
+
 //Handler for saving and loading
 function handleUserChoice(stepId, choiceText, nextStepId) {
-    const userName = prompt("Enter your name:") || "Guest"; // replace later with better login system
-    handleChoice(userName, stepId, choiceText); // Save to server
-    loadStep(nextStepId); // Move to next step
+    handleChoice(currentUserName, stepId, choiceText);
+    loadStep(nextStepId);
   }
+  
   
 //function send the users choice to the server to be saved
 function handleChoice(userName, stepId, chosenOption) {
@@ -48,7 +53,9 @@ function handleChoice(userName, stepId, chosenOption) {
       body: JSON.stringify({
         userName: userName, 
         step: stepId, // The step in the story where the choice was made
-        choice: chosenOption    // The choice the user picked
+        choice: chosenOption 
+       
+   // The choice the user picked
       })
     })
     .then(res => res.json()) // Parse the server response as JSON
@@ -89,7 +96,40 @@ async function checkUserProfileAndChoices(userName) {
   
     checkUserProfileAndChoices(userName); // Check if this user has choices
   }
-
+// Profile creation (now includes catName)
+userProfileForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const userName = document.querySelector('#userProfileForm #userName').value;
+    const catName = document.querySelector('#userProfileForm #catName').value;
+  
+    try {
+      const res = await fetch('/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: userName, petName: catName })
+      });
+  
+      const data = await res.json();
+      console.log('User profile created:', data);
+  
+      // Hide intro form and show intro text
+      document.getElementById('intro-container').style.display = 'none';
+      document.getElementById('intro-text').style.display = 'block';
+  
+      currentUserName = userName; // Update the global username
+      checkUserProfileAndChoices(userName); // Delete button shows if user has choices recorded
+      loadStep(); // Start the story
+    } catch (err) {
+      console.error('Failed to create user:', err);
+    }
+  });
+  
+  // Add an event listener to form when it's submitted
+  deleteForm.addEventListener('submit', function(event) {
+    event.preventDefault(); 
+  });
+    // Get users name from  input field
+    const userName = userNameInput.value;
 
 // Add an event listener to form when it's submitted
 deleteForm.addEventListener('submit', function(event) {
@@ -97,6 +137,8 @@ deleteForm.addEventListener('submit', function(event) {
 
     // Get users name from  input field
     const userName = userNameInput.value;
+
+    
 
     // Send a DELETE request to the server
     fetch(`/choices/${userName}`, {  // The URL includes the user name
@@ -131,4 +173,4 @@ deleteForm.addEventListener('submit', function(event) {
 
 
 // Load the first step
-loadStep();
+//loadStep(); //Commented out becuas ei dont want it to load immedietly 

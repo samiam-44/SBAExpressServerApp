@@ -57,6 +57,16 @@ router.put('/:id', (req, res) => {
     if (ending) user.ending = ending;
 res.json({ message: 'User updated!', user});
 });
+router.get('/profile/:name', (req, res) => {
+    const { name } = req.params; // the user's name from the URL
+    const user = user.find(u => u.name === name); // Find the user by name
+
+    if (!user) {
+        return res.status(404).json({ error: "User not found" });
+    }
+
+    res.render('profile', { user }); // Render profile page with the user data
+});
 // DELETE ROUTE- Remove a user
 router.delete('/:id', (req, res) => {
     const { id } = req.params; //get user ID
