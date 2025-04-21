@@ -4,6 +4,18 @@ const router = express.Router();
 let users = [];
 let userId = 1;
 
+//Filter users by name --QUERY PARAMETER
+router.get('/', (req, res) => {
+    const { name } = req.query;// destructuring the name query param from the request URL
+    if (name) { //If name query param is present in the request filter the 'users' array to include only users whose name contains the search string
+        const filtered = users.filter(user => user.name.includes(name));
+        return res.json(filtered); //return the filtered list of users as json
+    }
+    res.json(users); // Return all users if no 'name' query is provided
+
+});
+
+
 //Route to create new user and name the cat
 router.post('/', (req, res) => {
     const { username, petName } = req.body; //Grabs username or optional pet name from user
