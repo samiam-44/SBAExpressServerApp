@@ -1,5 +1,7 @@
 const storyContainer = document.getElementById('story-container');
-
+const deleteForm = document.getElementById('deleteChoicesForm');
+const userNameInput = document.getElementById('userName');
+const deleteChoicesForm = document.getElementById('deleteChoicesForm');
 // This default function is called to start if no stepID is provided
 async function loadStep(stepId = 'start') {
   try {
@@ -59,9 +61,35 @@ function handleChoice(userName, stepId, chosenOption) {
   }
   
 //Profile and delete
+// Check if the user has a profile and choices
+async function checkUserProfileAndChoices(userName) {
+    try {
+      const res = await fetch(`/api/choices/${userName}`); // Endpoint to check choices for the user
+      const data = await res.json();
+  
+      if (data.choices && data.choices.length > 0) {
+        deleteChoicesContainer.style.display = 'block'; // Show the delete form if there are choices
+      } else {
+        deleteChoicesContainer.style.display = 'none'; // Hide the delete form if no choices
+      }
+    } catch (err) {
+      console.error('Error fetching user choices:', err);
+      deleteChoicesContainer.style.display = 'none'; // Hide if there’s an error fetching data
+    }
+  }
+  
+  // Profile creation
+  async function createUserProfile() {
+    const userName = userNameInput.value || 'Guest'; // Default to 'Guest' if no input
+    await fetch('/profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userName })
+    });
+  
+    checkUserProfileAndChoices(userName); // Check if this user has choices
+  }
 
-const deleteForm = document.getElementById('deleteChoicesForm');
-const userNameInput = document.getElementById('userName');
 
 // Add an event listener to form when it's submitted
 deleteForm.addEventListener('submit', function(event) {
